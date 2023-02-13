@@ -1,7 +1,7 @@
 
 import BlogRouteDoc from "../routes/blog.doc.js"
 import UserRoute from "../routes/user.doc.js"
-import RealEstate from "../routes/realEstate.doc.js"
+// import RealEstate from "../routes/realEstate.doc.js"
 const swaggerDocumentation={
     openapi:"3.0.0",
     info:{
@@ -16,7 +16,7 @@ const swaggerDocumentation={
             description:'local dev'
         },
         {
-            url:'http://blogapi-0jru.onrender.com/',
+            url:'https://blogapi-0jru.onrender.com/',
             description:'production dev'
         }
     ],
@@ -49,7 +49,7 @@ const swaggerDocumentation={
     paths:{ 
         ...BlogRouteDoc,
         ...UserRoute,
-        ...RealEstate
+        // ...RealEstate
     },
     apis:['../routes/**/*.js'],
 
