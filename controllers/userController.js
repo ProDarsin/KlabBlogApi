@@ -2,6 +2,7 @@ import asyncHandler from "express-async-handler";
 import User from "../models/userModel.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
 
 const registerUser = asyncHandler(async (req, res) => {
     try {
@@ -94,8 +95,23 @@ const logIn = asyncHandler(async (req, res) => {
   }
 });
 
-const getMe = asyncHandler(async (req, res) => {
-  res.status(200).json(req.user);
+const getUserById = asyncHandler(async (req, res) => {
+  
+ try {
+  const {id}= req.params
+  if(!mongoose.Types.ObjectId.isValid(id)){
+    return res.status(401).send("not found in db ")
+  }
+
+  const user= await User.findById(id)
+  if(!user){
+    return res.status(401).send("not found in db ")
+  }
+  
+  res.status(200).json(user)
+ } catch (err) {
+  return res.status(500).json({error:err.message});
+ }
 });
 
 const generateToken = (id) => {
@@ -104,4 +120,49 @@ const generateToken = (id) => {
   });
 };
 
-export { registerUser, logIn, getMe };
+
+const DeleteUser=asyncHandler(async(req,res)=>{
+    
+  try {
+    const {id}= req.params
+    if(!mongoose.Types.ObjectId.isValid(id)){
+      return res.status(401).send("not found in db ")
+    }
+  
+    const user= await User.findById(id)
+    if(!user){
+      return res.status(401).send("not found in db ")
+    }
+
+     await user.remove()
+     res.status(200).json({id:req.params.id,msg:"user deleted"})
+    
+  } catch (error) {
+    return res.status(500).json({error:err.message});
+  }
+
+})
+
+const UpdateUser=asyncHandler(async(req,res)=>{
+    
+  try {
+    const {id}= req.params
+    const {email,name}= req.body
+    if(!mongoose.Types.ObjectId.isValid(id)){
+      return res.status(401).send("not found in db ")
+    }
+  
+    const user= await User.findById(id)
+    if(!user){
+      return res.status(401).send("not found in db ")
+    }
+
+     const UserUpdate=await User.findByIdAndUpdate(id,{email:req.body.email,name:req.body.name},{new:true})
+     res.status(200).json(UserUpdate)
+    
+  } catch (error) {
+    return res.status(500).json({error:err.message});
+  }
+
+})
+export { registerUser, logIn,getUserById ,getUser,DeleteUser,UpdateUser};
