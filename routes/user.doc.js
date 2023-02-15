@@ -1,3 +1,4 @@
+
 const user=[
     {
         "id": "63de495c44d2ed84efec582b",
@@ -100,12 +101,105 @@ const loginUser={
         }
     }
 }
+
+const updateBlogById={
+    tags:["User"],
+    summary:'update  Blogs by Id',
+      description:'update  Blogs by Id',
+      parameters:[
+          { 
+              name:'id',
+              in:'path',
+              description:'blog id ',
+              type:'ObjectId',
+              example:"63de495c44d2ed84efec582b"
+              
+          }
+      ],
+      requestBody:{
+        content:{
+            "application/json":{
+                schema:{
+                    type:'object',
+                    properties:{
+                        name:{
+                            type:"string",  
+                            description:"user name",
+                            example:'cloude'
+                        },
+                        email:{
+                            type:"string",  
+                            description:"user email",
+                            example:'Blad@gmail.com'
+                        },
+                    }
+                }
+            }
+        }
+    },
+      responses:{
+          200:{
+              description:'Ok',
+              content:{
+                  "application/json":{
+                      schema:{
+                          type:'object',
+                          example:{
+                              user
+                          }
+                      }
+                  }
+              }
+          },
+          400:{
+              description:'user is not found' 
+          }
+      }
+  }
+
+  const DeleteUserById={
+    tags:["User"],
+    summary:'update  Blogs by Id',
+      description:'update  Blogs by Id',
+      parameters:[
+          { 
+              name:'id',
+              in:'path',
+              description:'blog id ',
+              type:'ObjectId',
+              example:"63de495c44d2ed84efec582b"
+              
+          }
+      ],
+      responses:{
+          200:{
+              description:'Ok',
+              content:{
+                  "application/json":{
+                      schema:{
+                          type:'object',
+                          example:{
+                              user
+                          }
+                      }
+                  }
+              }
+          },
+          400:{
+              description:'user is not found' 
+          }
+      }
+  }
 const UserRoute={
 "/api/users":{
     post:registerUser
 },
 "/api/users/login":{
     post:loginUser
+},
+"/api/users/{id}":{
+    patch:updateBlogById,
+    delete:DeleteUserById
 }
 }
 
