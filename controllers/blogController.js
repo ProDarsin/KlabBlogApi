@@ -18,7 +18,7 @@ const SetBlog=asyncHandler(async(req,res)=>{
         throw new Error('please fill all field')
     }
     console.log(req.user);
-    const blog= await Blog.create({title,description,image:result.secure_url,user:req.user.id})
+    const blog= await Blog.create({title,description,image:result.secure_url,user:req.user._id,})
 
     if(blog){
         res.status(200).json(blog)
@@ -31,7 +31,7 @@ const SetBlog=asyncHandler(async(req,res)=>{
 // get all blog
 
 const getAllBlog=asyncHandler(async(req,res)=>{
-    const blog= await Blog.find({user:req.user.id}).sort({createdAt:-1})
+    const blog= await Blog.find({user:req.user.id,comment}).sort({createdAt:-1})
     res.status(200).json(blog)
 })
 
@@ -43,11 +43,12 @@ const getSingleBlog=asyncHandler(async(req,res)=>{
         throw new Error('no such id in database')
     }
     const blog= await Blog.findById(id)
+    const comment= await Comment.find({blog: id})
     if(!blog){
         res.status(400)
         throw new Error('no such blog in database')
     }
-    res.status(200).json(blog)
+    res.status(200).json({blog,comment})
 
 })
 
@@ -159,7 +160,7 @@ const Blogcomment=asyncHandler(async(req,res)=>{
         throw new Error('no such blog with dis id')
     }
     const {comment}= req.body
-  const comments=await Comment.create({comment})
+  const comments=await Comment.create({comment, blog:id})
      return res.status(200).json(comments)
     } catch (error) {
         console.log(error);

@@ -4,18 +4,18 @@ const commentSchema= new mongoose.Schema({
 
    comment:{
     type:String,
-    required:true
+    required:true 
    },
    blog:{
     type:mongoose.Schema.Types.ObjectId,
     ref:"Blog",
-    required:false
+    required:true
 
    },
    user:{
     type:mongoose.Schema.Types.ObjectId,
     ref:'User',
-    required:false
+    required:true
    }
 
 },

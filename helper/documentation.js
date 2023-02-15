@@ -1,7 +1,8 @@
 
 import BlogRouteDoc from "../routes/blog.doc.js"
 import UserRoute from "../routes/user.doc.js"
-// import RealEstate from "../routes/realEstate.doc.js"
+import RealEstate from "../routes/realEstate.doc.js"
+import contactUs from '../routes/contactUs.doc.js'
 const swaggerDocumentation={
     openapi:"3.0.0",
     info:{
@@ -34,6 +35,10 @@ const swaggerDocumentation={
         name:'RealEstate',
         description:'RealEstate routes'
     },
+    {
+        name:'ContactUs',
+        description:'ContactUs routes'
+    },
     ],
     components:{
         securitySchemes:{
@@ -49,7 +54,8 @@ const swaggerDocumentation={
     paths:{ 
         ...BlogRouteDoc,
         ...UserRoute,
-        // ...RealEstate
+        ...RealEstate,
+        ...contactUs
     },
     apis:['../routes/**/*.js'],
 

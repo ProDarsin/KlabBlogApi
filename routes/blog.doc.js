@@ -373,9 +373,9 @@
     post:CreateBlog,
 
       },
-    //   "/api/blogs/{id}":{
-    //     get:GetBlogById
-    //   },
+       "/api/blogs/{id}":{
+         get:GetBlogById
+       },
       
       "/api/blogs/{id}":{
         patch:updateBlogById,

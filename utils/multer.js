@@ -5,7 +5,7 @@ const upload= multer(
     {
         storage:multer.diskStorage({}),
         filename:(req,file,cb)=>{
-            cb(nul,file.originalname)
+            cb(null,file.originalname)
         },
         fileFilter:(req,file,cb)=>{
             let extention= path.extname(file.originalname)

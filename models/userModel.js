@@ -6,11 +6,11 @@ const UserModel= new mongoose.Schema({
     },
     email:{
         type:String,
-        required:[true,'[please type your email']
+        required:[true,'please type your email']
     },
     password:{
         type:String,
-        required:[true,'[please type your password']
+        required:[true,'please type your password']
     }
 },{
     timestamps:true
