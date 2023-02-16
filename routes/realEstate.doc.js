@@ -23,23 +23,22 @@ const estate=[
       }
 ]
 const getRealEstate={
-    tags:['RealEstate'],
-    summary:"get all real estate ",
-    description:"get all real estate ",
-    response:{
+    tags:["RealEstate"],
+    summary:'get  RealState',
+    description:'get  RealState',
+    responses:{
         200:{
-                description:'ok',
-                content:{
-                    'application/json':{
-                        schema:{
-                            type:'object',
-                            example:{
-                                estate
-                            },
+            description:'Ok',
+            content:{
+                "application/json":{
+                    schema:{
+                        type:'object',
+                        example:{
+                           estate
                         }
                     }
                 }
-            
+            }
         }
     }
 }

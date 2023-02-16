@@ -37,7 +37,7 @@ const setEstate=asyncHandler(async(req,res)=>{
 
 const getEstate=asyncHandler(async(req,res)=>{
     try {
-        const realEstate= await RealEstate.find().sort({createdAt:-1});
+        const realEstate= await RealEstate.find({}).sort({createdAt:-1});
     if(!realEstate){
         res.status(400)
         throw new Error("no data in database")
