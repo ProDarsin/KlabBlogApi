@@ -87,15 +87,32 @@ const updateEstate=asyncHandler(async(req,res)=>{
    }
     const realEstate= await RealEstate.findByIdAndUpdate({_id: req.params.id},
         {...req.body,image:urls.map(url=>url.secure_url)},{new:true})
-    res.status(200).json(realEstate)
+    res.status(200).json(realEstate).send('updateed')
  } catch (error) {
     
  }
 })
+
+const DeleteEstate=asyncHandler(async(req,res)=>{
+    try {
+       
+       const realEstate1= await RealEstate.findById(req.params.id)
+       if(!realEstate1){
+           res.status(404)
+           throw new Error('no such id in db')
+       }
+       
+        await realEstate1.remove()
+        res.status(200).json({id:req.params.id,msg:"real estate deleted"})
+    } catch (error) {
+       
+    }
+   })
 export {
     setEstate,
     getEstate,
     updateEstate,
-    getSingleEstate
+    getSingleEstate,
+    DeleteEstate
 
 }

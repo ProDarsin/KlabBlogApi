@@ -169,6 +169,147 @@ const getRealEstateByID={
         }
     }
 }
+const updateRealEstateByID={
+    tags:["RealEstate"],
+    summary:'update  estate by Id',
+      description:'update  estate by Id',
+
+      parameters:[
+          { 
+              name:'id',
+              in:'path',
+              description:'realEstate id ',
+              type:'ObjectId',
+              example:"63ea2ea511010c34617e1ae7"
+              
+          }
+      ],
+      requestBody:{
+        content:{
+            "multipart/form-data":{
+                schema:{
+                    type:'object',
+                    properties:{
+                        'location[province]':{
+                            type:'string',
+                            description:"Your blog text",
+                            example:"province"
+                           
+                        },
+                        'location[district]':{
+                            type:'string',
+                            description:"Your blog text",
+                            example:"district"
+                           
+                        },
+                        'location[street]':{
+                            type:'string',
+                            description:"Your blog text",
+                            example:"street"
+                           
+                        },
+                    
+                 
+                    price:{
+                        type:'string',
+                        description:"Your blog text",
+                        example:"price of estate"
+                    },
+                    image:{
+                        type:'file',
+                        description:'Your real estate phot',
+                        example:""
+                    },
+                
+                    beds:{
+                        type:'number',
+                        description:"beds number ",
+                        example:" 6"
+                    },
+                    bath:{
+                        type:'number',
+                        description:"bath number ",
+                        example:" 3"
+                    },
+                    yearBuilt:{
+                        type:'number',
+                        description:"year built in ",
+                        example:" 3"
+                    },
+                    lotSize:{
+                        type:'number',
+                        description:"lotsize ",
+                        example:" 3"
+                    },
+                    status:{
+                        type:'string',
+                        description:"your status ",
+                        example:" 4 star"
+                    },
+                    description:{
+                        type:'string',
+                        description:"your description",
+                        example:"nice"
+                    },
+                }
+                }
+            }
+        }
+    },
+      responses:{
+          200:{
+              description:'Ok',
+              content:{
+                  "application/json":{
+                      schema:{
+                          type:'object',
+                          example:{
+                              estate
+                          }
+                      }
+                  }
+              }
+          },
+          400:{
+              description:'realEstate is not found' 
+          }
+      }
+
+
+}
+const deleteRealEstateByID={
+        tags:["RealEstate"],
+        summary:'update  realEstate by Id',
+          description:'update  realEstate by Id',
+          parameters:[
+              { 
+                  name:'id',
+                  in:'path',
+                  description:'realEstate ',
+                  type:'ObjectId',
+                  example:"63de495c44d2ed84efec582b"
+                  
+              }
+          ],
+          responses:{
+              200:{
+                  description:'Ok',
+                  content:{
+                      "application/json":{
+                          schema:{
+                              type:'object',
+                              example:{
+                                 estate
+                              }
+                          }
+                      }
+                  }
+              },
+              400:{
+                  description:'realEstate is not found' 
+              }
+          }
+      }
 const RealEstate={
   '/api/realEstates':{
       get:getRealEstate,
@@ -176,6 +317,10 @@ const RealEstate={
   },
   '/api/realEstates/{id}':{
     get:getRealEstateByID,
-  }
+  },
+  '/api/realEstates/{id}':{
+    patch:updateRealEstateByID,
+    delete:deleteRealEstateByID,
+  },
 }
 export default RealEstate

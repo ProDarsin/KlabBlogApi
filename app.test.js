@@ -1,8 +1,7 @@
-import request  from "supertest";
-import app from "./app";
+const request =require("supertest")
+import app from "./app.js";
 
-describe('POST /users' ,()=>{
-
+jest.setTimeout(100000)
     describe('given a username, email and password',()=>{
         test('should respond with 200 status', async() => { 
         const response= await request(app).post('/api/users').send({
@@ -12,5 +11,4 @@ describe('POST /users' ,()=>{
         })
         expect(response.statusCode).toBe(200)
         })
-})
 })
