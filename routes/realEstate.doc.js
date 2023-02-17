@@ -79,9 +79,11 @@ const setRealState={
                                 example:"price of estate"
                             },
                             image:{
-                                type:'file',
-                                description:'Your real estate phot',
-                                example:""
+                                type:'array',
+                                description:'Your real estate photo ',
+                               items:{
+                                type:"file"
+                               }
                             },
                         
                             beds:{
