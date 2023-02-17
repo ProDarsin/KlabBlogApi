@@ -190,12 +190,58 @@ const updateBlogById={
           }
       }
   }
+  const PasswordReset={
+     tags:['User'],
+    summary:'reset password user',
+    description:'reset password user',
+    requestBody:{
+        content:{
+         'application/json':{
+            schema:{
+                type:'object',
+                properties:{
+                    email:{
+                        type:"string",  
+                        description:"user email",
+                        example:'Blad@gmail.com'
+                    },
+                    password:{
+                        type:"string",  
+                        description:" new user password",
+                        example:'******'
+                    }
+
+                }
+            }
+         }
+        }
+    },
+    responses:{
+        200:{
+            description:'ok',
+            content:{
+                'application/json':{
+                    schema:{
+                        type:'object',
+                        example:{
+                            user
+                        }
+                    }
+                }
+            }
+        }
+    }
+  }
 const UserRoute={
 "/api/users":{
     post:registerUser
 },
 "/api/users/login":{
     post:loginUser
+},
+
+"/api/users/reset":{
+    post:PasswordReset
 },
 "/api/users/{id}":{
     patch:updateBlogById,

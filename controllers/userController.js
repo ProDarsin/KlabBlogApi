@@ -3,9 +3,11 @@ import User from "../models/userModel.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
+import cloudinary from "../utils/Cloudinary.js";
 
 const registerUser = asyncHandler(async (req, res) => {
     try {
+   
         const { name, email, password } = req.body;
         if (!name || !email || !password) {
           return res.status(400).json("fill blank input")
@@ -27,6 +29,7 @@ const registerUser = asyncHandler(async (req, res) => {
           name,
           email,
           password: hashedPassword,
+       
         });
       
         if (user) {
@@ -39,8 +42,8 @@ const registerUser = asyncHandler(async (req, res) => {
           });
         }
         
-    } catch (error) {
-        return res.status(500).json(error)
+    } catch (err) {
+        return res.status(500).json({error:err.message})
         
     }
  
@@ -51,10 +54,10 @@ const getUser = asyncHandler(async (req, res) => {
         
         const user = await User.find({}).sort({ createdAt: -1 });
         if (user) {
-          res.status(201).json(user);
+          res.status(200).json(user);
         }
-    } catch (error) {
-        return res.status(500).json(error)
+    } catch (err) {
+      return res.status(500).json({error:err.message})
     }
  
 });
@@ -91,7 +94,7 @@ const logIn = asyncHandler(async (req, res) => {
       token: generateToken(user._id),
     });
   } catch (err) {
-    return res.status(500).json(err);
+    return res.status(500).json({error:err.message})
   }
 });
 
@@ -114,55 +117,90 @@ const getUserById = asyncHandler(async (req, res) => {
  }
 });
 
-const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: "30d",
-  });
-};
 
 
 const DeleteUser=asyncHandler(async(req,res)=>{
-    
+  
   try {
     const {id}= req.params
     if(!mongoose.Types.ObjectId.isValid(id)){
       return res.status(401).send("not found in db ")
     }
-  
+    
     const user= await User.findById(id)
     if(!user){
       return res.status(401).send("not found in db ")
     }
-
-     await user.remove()
-     res.status(200).json({id:req.params.id,msg:"user deleted"})
     
-  } catch (error) {
+    await user.remove()
+    res.status(200).json({id:req.params.id,msg:"user deleted"})
+    
+  } catch (err) {
     return res.status(500).json({error:err.message});
   }
-
+  
 })
 
 const UpdateUser=asyncHandler(async(req,res)=>{
-    
+  
   try {
     const {id}= req.params
     const {email,name}= req.body
     if(!mongoose.Types.ObjectId.isValid(id)){
       return res.status(401).send("not found in db ")
     }
-  
+    
     const user= await User.findById(id)
     if(!user){
       return res.status(401).send("not found in db ")
     }
-
-     const UserUpdate=await User.findByIdAndUpdate(id,{email:req.body.email,name:req.body.name},{new:true})
-     res.status(200).json(UserUpdate)
     
-  } catch (error) {
+    const UserUpdate=await User.findByIdAndUpdate(id,{email:req.body.email,name:req.body.name},{new:true})
+    res.status(200).json(UserUpdate)
+    
+  } catch (err) {
     return res.status(500).json({error:err.message});
   }
-
+  
 })
-export { registerUser, logIn,getUserById ,getUser,DeleteUser,UpdateUser};
+
+const resetPassword= asyncHandler(async(req,res)=>{
+
+ try {
+  
+  const {email,password}=req.body
+
+  if(!email  || !password){
+    res.status(404).json({mssg:"please fill all blank space"})
+    
+  }
+
+  if(!email){
+    res.status(404).json({mssg:"invalid  email"})
+  }
+
+  const user= await User.findOne({email})
+
+  if(user){
+
+    const salt= await bcrypt.genSalt(10)
+
+    const hashNewPassword= await bcrypt.hash(password,salt)
+  
+    const newP= await User.findOneAndUpdate({ email: email },{password:hashNewPassword},{returnOriginal: false})
+    console.log(newP);
+    res.status(201).json(newP)
+  }
+
+ } catch (err) {
+  
+  return res.status(500).json({error:err.message});
+ }
+})
+
+const generateToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: "30d",
+  });
+};
+export { registerUser, logIn,getUserById ,getUser,DeleteUser,UpdateUser,resetPassword};
